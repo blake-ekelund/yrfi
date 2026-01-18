@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
+import type { ChartOptions } from "chart.js";
 
 import {
   Chart as ChartJS,
@@ -27,7 +28,7 @@ ChartJS.register(
 export default function CompoundInterestPage() {
   const [monthly, setMonthly] = useState(200);
   const [years, setYears] = useState(20);
-  const rate = 0.07; // 7% default, intentionally opinionated
+  const rate = 0.07; // 7% default
 
   const data = useMemo(() => {
     let balance = 0;
@@ -59,22 +60,24 @@ export default function CompoundInterestPage() {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<"line"> = {
     responsive: true,
     plugins: {
-      legend: { display: false },
+      legend: {
+        display: false,
+      },
       tooltip: {
         callbacks: {
-          label: (ctx: any) =>
-            `$${ctx.raw.toLocaleString("en-US")}`,
+          label: (ctx) =>
+            `$${Number(ctx.raw).toLocaleString("en-US")}`,
         },
       },
     },
     scales: {
       y: {
         ticks: {
-          callback: (v: number) =>
-            `$${Number(v).toLocaleString()}`,
+          callback: (tickValue: string | number) =>
+            `$${Number(tickValue).toLocaleString("en-US")}`,
         },
       },
     },
@@ -154,6 +157,10 @@ export default function CompoundInterestPage() {
     </main>
   );
 }
+
+/* ---------------------------------------------
+   INPUT
+--------------------------------------------- */
 
 function Input({
   label,
