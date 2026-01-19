@@ -2,86 +2,28 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp } from "lucide-react";
-import type { ChartOptions } from "chart.js";
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  Legend
-);
+import { parseNumber } from "@/lib/formatters";
+import { calculateCompoundGrowth } from "./math";
+import { InputsPanel } from "./InputsPanel";
+import { ResultsSummary } from "./ResultsSummary";
+import { GrowthChart } from "./GrowthChart";
+import CalculatorLinks from "../components/CalculatorLinks";
 
 export default function CompoundInterestPage() {
-  const [monthly, setMonthly] = useState(200);
-  const [years, setYears] = useState(20);
-  const rate = 0.07; // 7% default
+  const [startingPortfolio, setStartingPortfolio] = useState("25,000");
+  const [monthlyContribution, setMonthlyContribution] = useState("250");
+  const [years, setYears] = useState("40");
+  const [returnRate, setReturnRate] = useState("8.00");
 
-  const data = useMemo(() => {
-    let balance = 0;
-    const points: number[] = [];
-    const labels: string[] = [];
-
-    for (let year = 1; year <= years; year++) {
-      for (let m = 0; m < 12; m++) {
-        balance = (balance + monthly) * (1 + rate / 12);
-      }
-      points.push(Math.round(balance));
-      labels.push(`Year ${year}`);
-    }
-
-    return { points, labels };
-  }, [monthly, years]);
-
-  const chartData = {
-    labels: data.labels,
-    datasets: [
-      {
-        label: "Total Value",
-        data: data.points,
-        borderColor: "#75B06F",
-        backgroundColor: "#75B06F",
-        tension: 0.35,
-        pointRadius: 0,
-      },
-    ],
-  };
-
-  const options: ChartOptions<"line"> = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        callbacks: {
-          label: (ctx) =>
-            `$${Number(ctx.raw).toLocaleString("en-US")}`,
-        },
-      },
-    },
-    scales: {
-      y: {
-        ticks: {
-          callback: (tickValue: string | number) =>
-            `$${Number(tickValue).toLocaleString("en-US")}`,
-        },
-      },
-    },
-  };
+  const results = useMemo(() => {
+    return calculateCompoundGrowth({
+      startingPortfolio: parseNumber(startingPortfolio),
+      monthlyContribution: parseNumber(monthlyContribution),
+      years: parseNumber(years),
+      annualReturnRate:
+        Number(returnRate.replace(/,/g, "")) / 100,
+    });
+  }, [startingPortfolio, monthlyContribution, years, returnRate]);
 
   return (
     <main
@@ -97,109 +39,39 @@ export default function CompoundInterestPage() {
         transition={{ duration: 0.4 }}
         style={{ maxWidth: 900, margin: "0 auto" }}
       >
-        {/* HEADER */}
-        <div style={{ marginBottom: 32 }}>
-          <TrendingUp color="#75B06F" />
-          <h1 style={{ marginBottom: 8 }}>Compound Interest</h1>
-          <p style={{ maxWidth: 520 }}>
-            Compounding feels slow — until it isn’t.
-          </p>
-        </div>
+        <h1 style={{ marginBottom: 12 }}>Compound Interest</h1>
+        <p style={{ maxWidth: 520, marginBottom: 32 }}>
+          Compounding feels slow — until it isn’t.
+        </p>
 
-        {/* CONTROLS */}
-        <div
-          style={{
-            display: "flex",
-            gap: 20,
-            flexWrap: "wrap",
-            marginBottom: 32,
-          }}
-        >
-          <Input
-            label="Monthly Contribution"
-            value={monthly}
-            onChange={setMonthly}
-            prefix="$"
-          />
-
-          <Input
-            label="Years"
-            value={years}
-            onChange={setYears}
-          />
-        </div>
-
-        {/* CHART */}
         <div
           style={{
             background: "#F0F8A4",
-            padding: 20,
+            padding: 24,
             borderRadius: 16,
-            boxShadow: "0 12px 30px rgba(0,0,0,0.1)",
+            boxSizing: "border-box",
           }}
         >
-          <Line data={chartData} options={options} />
-        </div>
+          <InputsPanel
+            startingPortfolio={startingPortfolio}
+            setStartingPortfolio={setStartingPortfolio}
+            monthlyContribution={monthlyContribution}
+            setMonthlyContribution={setMonthlyContribution}
+            years={years}
+            setYears={setYears}
+            returnRate={returnRate}
+            setReturnRate={setReturnRate}
+          />
 
-        {/* EXPLANATION */}
-        <p
-          style={{
-            marginTop: 24,
-            maxWidth: 620,
-            opacity: 0.9,
-          }}
-        >
-          Most of the growth happens at the end.
-          The early years feel pointless.
-          That’s the trap.
-        </p>
+          <ResultsSummary results={results} />
+
+          <div style={{ marginTop: 32 }}>
+            <GrowthChart results={results} />
+          </div>
+        </div>
+        <CalculatorLinks current="compound-interest" />
+
       </motion.div>
     </main>
-  );
-}
-
-/* ---------------------------------------------
-   INPUT
---------------------------------------------- */
-
-function Input({
-  label,
-  value,
-  onChange,
-  prefix,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  prefix?: string;
-}) {
-  return (
-    <div>
-      <div style={{ marginBottom: 6 }}>{label}</div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          background: "#F0F8A4",
-          borderRadius: 10,
-          padding: "8px 12px",
-        }}
-      >
-        {prefix && <span style={{ marginRight: 6 }}>{prefix}</span>}
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          style={{
-            border: "none",
-            background: "transparent",
-            outline: "none",
-            width: 100,
-            fontSize: 16,
-            color: "#36656B",
-          }}
-        />
-      </div>
-    </div>
   );
 }

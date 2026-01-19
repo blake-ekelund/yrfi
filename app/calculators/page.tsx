@@ -9,7 +9,6 @@ export default function CalculatorsPage() {
 
       <main
         style={{
-          minHeight: "100vh",
           padding: "60px 20px",
           color: "#36656B",
         }}

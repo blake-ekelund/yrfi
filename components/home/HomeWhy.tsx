@@ -42,7 +42,7 @@ export default function HomeWhy() {
       {/* CTA */}
       <div style={{ marginTop: 24 }}>
         <Link
-          href="/calculators/management-fees"
+          href="/blog/the-hidden-cost-of-1-percent"
           style={{
             display: "inline-block",
             background: "#F0F8A4",

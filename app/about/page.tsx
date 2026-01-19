@@ -1,50 +1,70 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function AboutPage() {
   return (
     <main
       style={{
-        minHeight: "100vh",
         padding: "60px 20px",
         color: "#36656B",
       }}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
         style={{
-          maxWidth: 720,
+          maxWidth: 1100,
           margin: "0 auto",
-          lineHeight: 1.6,
         }}
       >
-        <h1 style={{ marginBottom: 24 }}>About</h1>
+        {/* HEADER */}
+        <header style={{ marginBottom: 40 }}>
+          <h1 style={{ marginBottom: 10 }}>About</h1>
+          <p style={{ maxWidth: 520 }}>
+            Why yrfi exists, and how to think about personal finance more
+            clearly.
+          </p>
+        </header>
 
-        <p style={{ marginBottom: 16 }}>
-          I’m Blake, a VP of Finance with a long-standing interest in personal
-          finance and how people actually experience money.
-        </p>
+        {/* CONTENT */}
+        <div
+          style={{
+            maxWidth: 720,
+            lineHeight: 1.6,
+          }}
+        >
+          <p style={{ marginBottom: 16 }}>
+            I’m Blake, a VP of Finance with a long-standing interest in personal
+            finance and how people actually experience money.
+          </p>
 
-        <p style={{ marginBottom: 16 }}>
-          In my professional life, I work with financial models, forecasts, and
-          systems that make complexity manageable. In personal finance, that
-          same clarity is often missing. The result is that money feels opaque,
-          stressful, or harder than it needs to be.
-        </p>
+          <p style={{ marginBottom: 16 }}>
+            In my professional life, I work with financial models, forecasts,
+            and systems that make complexity manageable. In personal finance,
+            that same clarity is often missing. The result is that money feels
+            opaque, stressful, or harder than it needs to be.
+          </p>
 
-        <p style={{ marginBottom: 16 }}>
-          yrfi.io exists to change that.
-        </p>
+          <p style={{ marginBottom: 16 }}>
+            yrfi.io exists to change that.
+          </p>
 
-        <p style={{ marginBottom: 16 }}>
-          The goal isn’t to give advice, sell products, or tell people what they
-          “should” do. The goal is to make the mechanics visible, to turn
-          abstract ideas like compounding, debt payoff, and time into something
-          you can actually see and understand.
-        </p>
+          <p style={{ marginBottom: 16 }}>
+            The goal isn’t to give advice, sell products, or tell people what
+            they “should” do. The goal is to make the mechanics visible — to
+            turn abstract ideas like compounding, debt payoff, and time into
+            something you can actually see and understand.
+          </p>
 
-        <p>
-          When money becomes understandable, it becomes less scary. And when
-          it’s less scary, people can make calmer, more intentional decisions.
-          That’s what financial independence really starts with.
-        </p>
-      </div>
+          <p>
+            When money becomes understandable, it becomes less scary. And when
+            it’s less scary, people can make calmer, more intentional
+            decisions. That’s what financial independence really starts with.
+          </p>
+        </div>
+      </motion.div>
     </main>
   );
 }

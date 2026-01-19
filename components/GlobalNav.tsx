@@ -84,6 +84,12 @@ export default function GlobalNav() {
                 Calculators
               </button>
               <button
+                onClick={() => router.push("/blog")}
+                style={desktopNavItemStyle}
+              >
+                Blog
+              </button>              
+              <button
                 onClick={() => router.push("/about")}
                 style={desktopNavItemStyle}
               >
@@ -177,7 +183,13 @@ export default function GlobalNav() {
               >
                 Calculators
               </Link>
-
+              <Link
+                href="/blog"
+                onClick={closeMobile}
+                style={{ color: "#F0F8A4", textDecoration: "none" }}
+              >
+                Blog
+              </Link>
               <Link
                 href="/about"
                 onClick={closeMobile}
