@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import GlobalNav from "../components/GlobalNav";
 import GlobalFooter from "../components/GlobalFooter";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +36,7 @@ export default function RootLayout({
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          overflowX: "hidden", // 🔒 critical
+          overflowX: "hidden", // critical for mobile
         }}
       >
         <GlobalNav />
@@ -45,6 +47,10 @@ export default function RootLayout({
         </main>
 
         <GlobalFooter />
+
+        {/* VERCEL ANALYTICS */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
