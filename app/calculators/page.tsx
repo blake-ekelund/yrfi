@@ -1,58 +1,62 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, Layers } from "lucide-react";
+import { TrendingUp, Layers, Target } from "lucide-react";
 
 export default function CalculatorsPage() {
   return (
-    <>
-
-      <main
-        style={{
-          padding: "60px 20px",
-          color: "#36656B",
-        }}
+    <main
+      style={{
+        padding: "60px 20px",
+        color: "#36656B",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ maxWidth: 1100, margin: "0 auto" }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          style={{ maxWidth: 1100, margin: "0 auto" }}
+        {/* HEADER */}
+        <header style={{ marginBottom: 40 }}>
+          <h1 style={{ marginBottom: 10 }}>Calculators</h1>
+          <p style={{ maxWidth: 520 }}>
+            Short, visual tools to understand how money actually behaves.
+          </p>
+        </header>
+
+        {/* GRID */}
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 22,
+          }}
         >
-          {/* HEADER */}
-          <header style={{ marginBottom: 40 }}>
-            <h1 style={{ marginBottom: 10 }}>Calculators</h1>
-            <p style={{ maxWidth: 520 }}>
-              Short, visual tools to understand how money actually behaves.
-            </p>
-          </header>
+          <CalculatorCard
+            icon={<TrendingUp />}
+            title="Compound Interest"
+            description="Why time matters more than effort."
+            href="/calculators/compound-interest"
+          />
 
-          {/* GRID */}
-          <section
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: 22,
-            }}
-          >
-            <CalculatorCard
-              icon={<TrendingUp />}
-              title="Compound Interest"
-              description="Why time matters more than effort."
-              href="/calculators/compound-interest"
-            />
+          <CalculatorCard
+            icon={<Target />}
+            title="Target Reach"
+            description="How long it may take to reach a savings or FIRE goal."
+            href="/calculators/target-reach"
+          />
 
-            <CalculatorCard
-              icon={<Layers />}
-              title="Debt Snowball"
-              description="How momentum beats optimization."
-              href="/calculators/debt-snowball"
-              comingSoon
-            />
-          </section>
-        </motion.div>
-      </main>
-    </>
+          <CalculatorCard
+            icon={<Layers />}
+            title="Debt Snowball"
+            description="How momentum beats optimization."
+            href="/calculators/debt-snowball"
+            comingSoon
+          />
+        </section>
+      </motion.div>
+    </main>
   );
 }
 

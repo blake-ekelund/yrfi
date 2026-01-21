@@ -13,14 +13,20 @@ export default function BlogPage() {
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
+  // Only show published posts
+  const livePosts = useMemo(
+    () => blogPosts.filter((p) => p.published),
+    []
+  );
+
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
-    blogPosts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
+    livePosts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
     return Array.from(tagSet).sort();
-  }, []);
+  }, [livePosts]);
 
   const filteredPosts = useMemo(() => {
-    return blogPosts
+    return livePosts
       .slice()
       .sort(
         (a, b) =>
@@ -37,7 +43,7 @@ export default function BlogPage() {
 
         return matchesTag && matchesSearch;
       });
-  }, [search, activeTag]);
+  }, [search, activeTag, livePosts]);
 
   return (
     <main
@@ -63,69 +69,97 @@ export default function BlogPage() {
         </p>
       </motion.section>
 
-      {/* CONTROLS */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 16,
-          marginBottom: 40,
-        }}
-      >
-        {/* SEARCH */}
-        <input
-          type="text"
-          placeholder="Search posts"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+      {/* COMING SOON STATE */}
+      {livePosts.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
           style={{
-            padding: "10px 12px",
-            borderRadius: 10,
-            border: "1px solid #E5E5E5",
-            fontSize: 14,
-            minWidth: 220,
             background: "#FFFFFF",
-            color: "#36656B",
-            outline: "none",
+            border: "1px solid #E5E5E5",
+            borderRadius: 16,
+            padding: 24,
+            maxWidth: 520,
           }}
-        />
+        >
+          <h3 style={{ marginBottom: 8 }}>Writing, coming soon</h3>
+          <p style={{ margin: 0, lineHeight: 1.6 }}>
+            The first post,{" "}
+            <em>“The hidden cost of 1%”</em>, will be published on{" "}
+            <strong>January 23, 2026</strong>.
+          </p>
+        </motion.div>
+      )}
 
-        {/* TAG FILTER */}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <TagButton
-            label="All"
-            active={!activeTag}
-            onClick={() => setActiveTag(null)}
-          />
-          {allTags.map((tag) => (
-            <TagButton
-              key={tag}
-              label={tag}
-              active={activeTag === tag}
-              onClick={() => setActiveTag(tag)}
+      {/* CONTROLS + POSTS (ONLY IF LIVE POSTS EXIST) */}
+      {livePosts.length > 0 && (
+        <>
+          {/* CONTROLS */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 16,
+              marginBottom: 40,
+            }}
+          >
+            {/* SEARCH */}
+            <input
+              type="text"
+              placeholder="Search posts"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: "1px solid #E5E5E5",
+                fontSize: 14,
+                minWidth: 220,
+                background: "#FFFFFF",
+                color: "#36656B",
+                outline: "none",
+              }}
             />
-          ))}
-        </div>
-      </div>
 
-      {/* POSTS GRID */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: 24,
-        }}
-      >
-        {filteredPosts.map((post) => (
-          <BlogCard key={post.slug} post={post} />
-        ))}
-
-        {filteredPosts.length === 0 && (
-          <div style={{ opacity: 0.7 }}>
-            No posts match your filters.
+            {/* TAG FILTER */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <TagButton
+                label="All"
+                active={!activeTag}
+                onClick={() => setActiveTag(null)}
+              />
+              {allTags.map((tag) => (
+                <TagButton
+                  key={tag}
+                  label={tag}
+                  active={activeTag === tag}
+                  onClick={() => setActiveTag(tag)}
+                />
+              ))}
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* POSTS GRID */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: 24,
+            }}
+          >
+            {filteredPosts.map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))}
+
+            {filteredPosts.length === 0 && (
+              <div style={{ opacity: 0.7 }}>
+                No posts match your filters.
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </main>
   );
 }

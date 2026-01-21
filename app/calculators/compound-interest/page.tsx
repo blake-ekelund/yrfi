@@ -8,6 +8,7 @@ import { InputsPanel } from "./InputsPanel";
 import { ResultsSummary } from "./ResultsSummary";
 import { GrowthChart } from "./GrowthChart";
 import CalculatorLinks from "../components/CalculatorLinks";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 export default function CompoundInterestPage() {
   const [startingPortfolio, setStartingPortfolio] = useState("25,000");
@@ -39,6 +40,14 @@ export default function CompoundInterestPage() {
         transition={{ duration: 0.4 }}
         style={{ maxWidth: 900, margin: "0 auto" }}
       >
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Calculators", href: "/calculators" },
+          { label: "Compound Interest" },
+        ]}
+      />
+
         <h1 style={{ marginBottom: 12 }}>Compound Interest</h1>
         <p style={{ maxWidth: 520, marginBottom: 32 }}>
           Compounding feels slow — until it isn’t.

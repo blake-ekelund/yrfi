@@ -5,9 +5,7 @@ export default function CalculatorLinks({
 }) {
   const calculators = [
     { key: "compound-interest", label: "Compound Interest", href: "/calculators/compound-interest" },
-    { key: "management-fees", label: "Management Fees", href: "/calculators/management-fees" },
-    { key: "fire", label: "FIRE Number", href: "/calculators/fire" },
-    { key: "debt-snowball", label: "Debt Snowball", href: "/calculators/debt-snowball" },
+    { key: "target-reach", label: "Target Reach", href: "/calculators/target-reach" },
   ];
 
   const visible = calculators.filter(
