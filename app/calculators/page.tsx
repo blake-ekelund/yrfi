@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, Layers, Target } from "lucide-react";
+import { TrendingUp, Layers, Target, Banknote, FireExtinguisher, Flame } from "lucide-react";
 
 export default function CalculatorsPage() {
   return (
@@ -41,10 +41,24 @@ export default function CalculatorsPage() {
           />
 
           <CalculatorCard
+            icon={<Flame />}
+            title="FIRE Number"
+            description="How much do you need to achieve financial independence?"
+            href="/calculators/fire-number"
+          />
+
+          <CalculatorCard
             icon={<Target />}
             title="Target Reach"
             description="How long it may take to reach a savings or FIRE goal."
             href="/calculators/target-reach"
+          />
+
+          <CalculatorCard
+            icon={<Banknote />}
+            title="Management Fees"
+            description="How quickly and exponentially management fees can stack up."
+            href="/calculators/management-fees"
           />
 
           <CalculatorCard
@@ -54,6 +68,14 @@ export default function CalculatorsPage() {
             href="/calculators/debt-snowball"
             comingSoon
           />
+
+          <CalculatorCard
+            icon={<Layers />}
+            title="Sequence of Returns"
+            description="Visualize the impact of different return scenarios in retirement."
+            href="/calculators/sequence-of-returns"
+            comingSoon
+          />          
         </section>
       </motion.div>
     </main>
