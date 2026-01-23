@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TrendingUp, Layers, Target, Banknote, FireExtinguisher, Flame } from "lucide-react";
+import { TrendingUp, Layers, Target, Banknote, Flame } from "lucide-react";
 
 export default function CalculatorsPage() {
   return (

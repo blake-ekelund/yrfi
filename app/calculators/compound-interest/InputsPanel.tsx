@@ -37,6 +37,7 @@ export function InputsPanel({
     >
       <Input
         label="Starting portfolio"
+        help="The amount you already have invested today. If you are just starting out, this can be $0. Typical range: $0-$500,000+."
         value={startingPortfolio}
         onChange={setStartingPortfolio}
         placeholder="25,000"
@@ -48,6 +49,7 @@ export function InputsPanel({
 
       <Input
         label="Monthly contribution"
+        help="How much you plan to add every month. Consistency matters more than size. Typical range: $100-$2,500 per month."
         value={monthlyContribution}
         onChange={setMonthlyContribution}
         placeholder="250"
@@ -59,6 +61,7 @@ export function InputsPanel({
 
       <Input
         label="Time horizon (years)"
+        help="How long you plan to keep investing before using the money. Longer time horizons benefit more from compounding. Typical range: 20-40 years."
         value={years}
         onChange={setYears}
         placeholder="40"
@@ -70,6 +73,7 @@ export function InputsPanel({
 
       <Input
         label="Annual return rate (%)"
+        help="Your expected average annual return. This is an estimate, not a guarantee. A common long-term assumption for diversified stock portfolios is 6-10%."
         value={returnRate}
         onChange={setReturnRate}
         placeholder="8.00"
@@ -84,6 +88,7 @@ export function InputsPanel({
 
 function Input({
   label,
+  help,
   value,
   onChange,
   placeholder,
@@ -92,16 +97,69 @@ function Input({
   padding,
   fontSize,
 }: any) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div>
-      <label
+    <div style={{ position: "relative" }}>
+      {/* Label + info */}
+      <div
         style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
           fontSize: labelSize,
-          opacity: 0.8,
+          opacity: 0.85,
         }}
       >
-        {label}
-      </label>
+        <span>{label}</span>
+
+        <button
+          type="button"
+          aria-label={`Info about ${label}`}
+          onClick={() => setOpen(!open)}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          style={{
+            width: 16,
+            height: 16,
+            borderRadius: "50%",
+            border: "1px solid rgba(54,101,107,0.4)",
+            background: "transparent",
+            fontSize: 11,
+            lineHeight: "14px",
+            textAlign: "center",
+            cursor: "pointer",
+            color: "#36656B",
+            padding: 0,
+          }}
+        >
+          i
+        </button>
+      </div>
+
+      {/* Tooltip */}
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            marginTop: 6,
+            background: "#ffffff",
+            border: "1px solid rgba(54,101,107,0.2)",
+            borderRadius: 8,
+            padding: 10,
+            fontSize: 12,
+            lineHeight: 1.4,
+            color: "#36656B",
+            zIndex: 10,
+            maxWidth: 260,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+          }}
+        >
+          {help}
+        </div>
+      )}
 
       <input
         type="text"
@@ -109,7 +167,7 @@ function Input({
         onChange={(e) => onChange(formatter(e.target.value))}
         placeholder={placeholder}
         style={{
-          marginTop: 4,
+          marginTop: 6,
           padding,
           borderRadius: 8,
           border: "none",

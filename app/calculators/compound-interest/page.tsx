@@ -7,6 +7,7 @@ import { calculateCompoundGrowth } from "./math";
 import { InputsPanel } from "./InputsPanel";
 import { ResultsSummary } from "./ResultsSummary";
 import { GrowthChart } from "./GrowthChart";
+import { GrowthTable } from "./GrowthTable";
 import CalculatorLinks from "../components/CalculatorLinks";
 import Breadcrumbs from "../components/Breadcrumbs";
 
@@ -21,8 +22,7 @@ export default function CompoundInterestPage() {
       startingPortfolio: parseNumber(startingPortfolio),
       monthlyContribution: parseNumber(monthlyContribution),
       years: parseNumber(years),
-      annualReturnRate:
-        Number(returnRate.replace(/,/g, "")) / 100,
+      annualReturnRate: Number(returnRate.replace(/,/g, "")) / 100,
     });
   }, [startingPortfolio, monthlyContribution, years, returnRate]);
 
@@ -38,19 +38,23 @@ export default function CompoundInterestPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        style={{ maxWidth: 900, margin: "0 auto" }}
+        style={{ maxWidth: 960, margin: "0 auto" }}
       >
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Calculators", href: "/calculators" },
-          { label: "Compound Interest" },
-        ]}
-      />
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Calculators", href: "/calculators" },
+            { label: "Compound Interest" },
+          ]}
+        />
 
         <h1 style={{ marginBottom: 12 }}>Compound Interest</h1>
-        <p style={{ maxWidth: 520, marginBottom: 32 }}>
-          Compounding feels slow — until it isn’t.
+
+        {/* 🔍 NEW INTRO */}
+        <p style={{ maxWidth: 980, lineHeight: 1.5, marginBottom: 12 }}>
+          This calculator shows how compound growth works over time when you
+          combine an initial portfolio, consistent monthly contributions, and an
+          assumed annual rate of return.
         </p>
 
         <div
@@ -77,9 +81,12 @@ export default function CompoundInterestPage() {
           <div style={{ marginTop: 32 }}>
             <GrowthChart results={results} />
           </div>
-        </div>
-        <CalculatorLinks current="compound-interest" />
 
+          {/* 📊 NEW TABLE */}
+          <GrowthTable results={results} />
+        </div>
+
+        <CalculatorLinks current="compound-interest" />
       </motion.div>
     </main>
   );
