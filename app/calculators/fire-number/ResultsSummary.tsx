@@ -4,7 +4,7 @@ export function ResultsSummary({ fireNumber }: { fireNumber: number }) {
   return (
     <div
       style={{
-        marginTop: 32,
+        marginTop: 16,
         paddingTop: 16,
         borderTop: "1px solid rgba(54,101,107,0.25)",
         color: "#36656B",
