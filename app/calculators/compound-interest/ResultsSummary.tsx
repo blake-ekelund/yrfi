@@ -1,4 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export function ResultsSummary({ results }: { results: any[] }) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   if (!results.length) return null;
 
   const starting = results[0].startingValue;
@@ -13,7 +26,9 @@ export function ResultsSummary({ results }: { results: any[] }) {
         paddingTop: 16,
         borderTop: "1px solid rgba(54,101,107,0.25)",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+        gridTemplateColumns: isDesktop
+          ? "repeat(4, 1fr)" // 🖥 4 across
+          : "repeat(2, 1fr)", // 📱 2x2
         gap: 16,
       }}
     >
@@ -25,10 +40,20 @@ export function ResultsSummary({ results }: { results: any[] }) {
   );
 }
 
-function Metric({ label, value, highlight }: any) {
+function Metric({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: number;
+  highlight?: boolean;
+}) {
   return (
     <div>
-      <div style={{ fontSize: 13, opacity: 0.7 }}>{label}</div>
+      <div style={{ fontSize: 13, opacity: 0.7 }}>
+        {label}
+      </div>
       <div
         style={{
           fontSize: highlight ? 22 : 18,
