@@ -48,13 +48,15 @@ export function TargetReachMatrixMobile({
         {/* Header */}
         <div
           style={{
-            padding: "14px 16px",
-            background: "rgba(117,176,111,0.12)",
+            padding: "12px 12px",
+            background: "rgb(255, 255, 255)",
             borderBottom: "1px solid rgba(54,101,107,0.15)",
-            fontWeight: 500,
           }}
         >
-          Years to Target — Sensitivity
+          <strong>Target Reach Matrix</strong>
+          <div style={{ fontSize: 13, opacity: 0.75 }}>
+            Monthly Contribution x Annual Return Rate %
+          </div>
         </div>
 
         <table
@@ -120,7 +122,7 @@ export function TargetReachMatrixMobile({
                           "1px solid rgba(54,101,107,0.08)",
                       }}
                     >
-                      {res[res.length - 1].year} yrs
+                      {res[res.length - 1].year.toFixed(1)} yrs
                     </td>
                   );
                 })}

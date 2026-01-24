@@ -5,16 +5,22 @@ import { CalculatorsFiltersMobile } from "./CalculatorsFiltersMobile";
 import { CalculatorsFiltersDesktop } from "./CalculatorsFiltersDesktop";
 import type { CalculatorTag } from "./types";
 
+type ViewMode = "grid" | "table";
+
 export function CalculatorsFilters({
   search,
   setSearch,
   activeTag,
   setActiveTag,
+  view,
+  setView,
 }: {
   search: string;
   setSearch: (v: string) => void;
   activeTag: CalculatorTag | null;
   setActiveTag: (v: CalculatorTag | null) => void;
+  view: ViewMode;
+  setView: (v: ViewMode) => void;
 }) {
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -36,6 +42,8 @@ export function CalculatorsFilters({
     <CalculatorsFiltersMobile
       search={search}
       setSearch={setSearch}
+      view={view}
+      setView={setView}
     />
   );
 }

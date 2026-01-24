@@ -50,14 +50,14 @@ export function TargetReachMatrixDesktop({
         {/* Header */}
         <div
           style={{
-            padding: "16px 20px",
-            background: "rgba(117,176,111,0.12)",
+            padding: "12px 12px",
+            background: "rgb(255, 255, 255)",
             borderBottom: "1px solid rgba(54,101,107,0.15)",
           }}
         >
-          <strong>Target Reach Decision Matrix</strong>
+          <strong>Target Reach Matrix</strong>
           <div style={{ fontSize: 13, opacity: 0.75 }}>
-            Rows = monthly contribution · Columns = annual return
+            Monthly Contribution x Annual Return Rate %
           </div>
         </div>
 
@@ -114,6 +114,8 @@ export function TargetReachMatrixDesktop({
                     annualReturnRate: r,
                   });
 
+                  const years = res[res.length - 1].year;
+
                   return (
                     <td
                       key={colIdx}
@@ -123,7 +125,7 @@ export function TargetReachMatrixDesktop({
                           "1px solid rgba(54,101,107,0.08)",
                       }}
                     >
-                      {res[res.length - 1].year} yrs
+                      {years.toFixed(1)} yrs
                     </td>
                   );
                 })}

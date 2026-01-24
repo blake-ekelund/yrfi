@@ -1,13 +1,19 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, LayoutGrid, Table as TableIcon } from "lucide-react";
+
+type ViewMode = "grid" | "table";
 
 export function CalculatorsFiltersMobile({
   search,
   setSearch,
+  view,
+  setView,
 }: {
   search: string;
   setSearch: (v: string) => void;
+  view: ViewMode;
+  setView: (v: ViewMode) => void;
 }) {
   return (
     <div
@@ -16,13 +22,16 @@ export function CalculatorsFiltersMobile({
         alignItems: "center",
         gap: 8,
         background: "#fff",
-        padding: "10px 12px",
+        padding: "8px 10px",
         borderRadius: 12,
         border: "1px solid rgba(54,101,107,0.2)",
         marginBottom: 24,
       }}
     >
+      {/* Search icon */}
       <Search size={16} opacity={0.6} />
+
+      {/* Input */}
       <input
         placeholder="Search calculators…"
         value={search}
@@ -35,6 +44,58 @@ export function CalculatorsFiltersMobile({
           color: "#36656B",
         }}
       />
+
+      {/* View toggle */}
+      <div
+        style={{
+          display: "flex",
+          gap: 4,
+          borderLeft: "1px solid rgba(54,101,107,0.15)",
+          paddingLeft: 6,
+        }}
+      >
+        <ToggleButton
+          active={view === "grid"}
+          onClick={() => setView("grid")}
+          icon={<LayoutGrid size={16} />}
+        />
+        <ToggleButton
+          active={view === "table"}
+          onClick={() => setView("table")}
+          icon={<TableIcon size={16} />}
+        />
+      </div>
     </div>
+  );
+}
+
+/* -----------------------------
+   Toggle button
+------------------------------ */
+
+function ToggleButton({
+  active,
+  onClick,
+  icon,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        border: "none",
+        background: active ? "#36656B" : "transparent",
+        color: active ? "#F0F8A4" : "#36656B",
+        padding: "6px",
+        borderRadius: 6,
+        cursor: "pointer",
+      }}
+      aria-pressed={active}
+    >
+      {icon}
+    </button>
   );
 }

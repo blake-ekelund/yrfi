@@ -42,9 +42,9 @@ export function ManagementFeesMatrixMobile({
             borderBottom: "1px solid rgba(54,101,107,0.15)",
           }}
         >
-          <strong>Wealth Lost to Fees Sensitivity Matrix</strong>
+          <strong>Wealth Lost to Fees Matrix</strong>
           <div style={{ fontSize: 13, opacity: 0.75 }}>
-            # of Years in the market x Management Fee %
+            Years in the market x Management Fee %
           </div>
         </div>
 
@@ -88,7 +88,7 @@ export function ManagementFeesMatrixMobile({
   );
 }
 
-const thLeft = { padding: "10px 12px", fontSize: 12, opacity: 0.7 };
-const thRight = { padding: "10px 12px", textAlign: "right" as const, fontSize: 12, opacity: 0.7 };
-const tdLeft = { padding: "12px", fontWeight: 500 };
-const tdRight = { padding: "12px", textAlign: "right" as const };
+const thLeft = { padding: "10px 8px", fontSize: 10, opacity: 0.7 };
+const thRight = { padding: "10px 8px", textAlign: "right" as const, fontSize: 10, opacity: 0.7 };
+const tdLeft = { padding: "10px", fontSize: 12,  fontWeight: 500 };
+const tdRight = { padding: "10px", fontSize: 12,  textAlign: "right" as const };

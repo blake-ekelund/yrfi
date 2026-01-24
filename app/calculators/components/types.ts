@@ -3,3 +3,12 @@ export type CalculatorTag =
   | "Savings"
   | "Investing"
   | "Retirement";
+
+export type Calculator = {
+  title: string;
+  description: string;
+  href: string;
+  icon: React.ReactNode;
+  tags: CalculatorTag[];
+  comingSoon?: boolean;
+};

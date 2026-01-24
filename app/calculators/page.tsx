@@ -156,6 +156,8 @@ export default function CalculatorsPage() {
             setSearch={setSearch}
             activeTag={activeTag}
             setActiveTag={setActiveTag}
+            view={view}
+            setView={setView}
           />
 
           {/* Desktop-only view toggle */}
@@ -186,7 +188,7 @@ export default function CalculatorsPage() {
 
         {/* CONTENT */}
         <AnimatePresence mode="wait">
-          {(view === "grid" || !isDesktop) && (
+          {view === "grid" && (
             <motion.div
               key="grid"
               initial={{ opacity: 0, y: 12 }}
@@ -198,7 +200,7 @@ export default function CalculatorsPage() {
             </motion.div>
           )}
 
-          {view === "table" && isDesktop && (
+          {view === "table" && (
             <motion.div
               key="table"
               initial={{ opacity: 0, y: 12 }}

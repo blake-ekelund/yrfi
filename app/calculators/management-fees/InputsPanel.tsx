@@ -47,7 +47,7 @@ export function InputsPanel({
       />
 
       <Input
-        label="Annual management fee (%)"
+        label="Annual management fee %"
         value={feeRate}
         onChange={setFeeRate}
         placeholder="1.00"
@@ -58,7 +58,7 @@ export function InputsPanel({
       />
 
       <Input
-        label="Expected annual return (%)"
+        label="Expected annual return %"
         value={returnRate}
         onChange={setReturnRate}
         placeholder="8.00"
