@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence  } from "framer-motion";
 import {
   TrendingUp,
   Layers,
@@ -185,11 +185,31 @@ export default function CalculatorsPage() {
         </div>
 
         {/* CONTENT */}
-        {view === "grid" || !isDesktop ? (
-          <GridView calculators={filteredCalculators} />
-        ) : (
-          <TableView calculators={filteredCalculators} />
-        )}
+        <AnimatePresence mode="wait">
+          {(view === "grid" || !isDesktop) && (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <GridView calculators={filteredCalculators} />
+            </motion.div>
+          )}
+
+          {view === "table" && isDesktop && (
+            <motion.div
+              key="table"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <TableView calculators={filteredCalculators} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {filteredCalculators.length === 0 && (
           <div style={{ opacity: 0.6, marginTop: 20 }}>

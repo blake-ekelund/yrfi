@@ -1,6 +1,18 @@
-export function ResultsSummary({ results }: { results: any[] }) {
-  if (!results.length) return null;
+"use client";
 
+import { useEffect, useState } from "react";
+
+export function ResultsSummary({ results }: { results: any[] }) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  if (!results.length) return null;
   const last = results[results.length - 1];
 
   return (
@@ -10,7 +22,9 @@ export function ResultsSummary({ results }: { results: any[] }) {
         paddingTop: 16,
         borderTop: "1px solid rgba(54,101,107,0.25)",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+        gridTemplateColumns: isDesktop
+          ? "repeat(4, 1fr)"
+          : "repeat(2, 1fr)",
         gap: 16,
       }}
     >

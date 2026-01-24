@@ -7,14 +7,16 @@ import { calculateYearsToTarget } from "./math";
 import { InputsPanel } from "./InputsPanel";
 import { ResultsSummary } from "./ResultsSummary";
 import { GrowthChart } from "./GrowthChart";
-import CalculatorLinks from "../components/CalculatorLinks";
+import { TargetReachMatrix } from "./TargetReachMatrix";
 import Breadcrumbs from "../components/Breadcrumbs";
+import CalculatorLinks from "../components/CalculatorLinks";
 
 export default function TargetReachPage() {
   const [target, setTarget] = useState("1,500,000");
   const [current, setCurrent] = useState("250,000");
   const [contribution, setContribution] = useState("2,000");
   const [returnRate, setReturnRate] = useState("7.00");
+
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -35,40 +37,32 @@ export default function TargetReachPage() {
   }, [target, current, contribution, returnRate]);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        padding: "60px 20px",
-        color: "#36656B",
-      }}
-    >
+    <main style={{ minHeight: "100vh", padding: "60px 20px", color: "#36656B" }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        style={{ maxWidth: 900, margin: "0 auto" }}
+        style={{ maxWidth: 960, margin: "0 auto" }}
       >
-        {/* HEADER */}
         <Breadcrumbs
-            items={[
+          items={[
             { label: "Home", href: "/" },
             { label: "Calculators", href: "/calculators" },
             { label: "Target Reach" },
-            ]}
-        />        
+          ]}
+        />
+
         <h1 style={{ marginBottom: 12 }}>Target Reach</h1>
-        <p style={{ maxWidth: 520, marginBottom: 32 }}>
-          Estimate how long it may take to reach a savings or FIRE goal
-          based on where you are today.
+        <p style={{ maxWidth: 960, marginBottom: 32, lineHeight: 1.5 }}>
+          Estimate how long it may take to reach a savings or FIRE goal based on
+          where you are today and how aggressively you contribute.
         </p>
 
-        {/* CALCULATOR */}
         <div
           style={{
             background: "#F0F8A4",
             padding: 24,
             borderRadius: 16,
-            boxSizing: "border-box",
           }}
         >
           <InputsPanel
@@ -92,9 +86,17 @@ export default function TargetReachPage() {
               <GrowthChart results={results} />
             </div>
           )}
+
+          <TargetReachMatrix
+            target={parseNumber(target)}
+            current={parseNumber(current)}
+            contribution={parseNumber(contribution)}
+            returnRate={
+              Number(returnRate.replace(/,/g, "")) / 100
+            }
+          />
         </div>
 
-        {/* OTHER CALCULATORS */}
         <CalculatorLinks current="target-reach" />
       </motion.div>
     </main>
