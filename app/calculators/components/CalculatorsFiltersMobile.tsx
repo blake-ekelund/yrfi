@@ -20,12 +20,12 @@ export function CalculatorsFiltersMobile({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 8,
+        gap: 16,
         background: "#fff",
         padding: "8px 10px",
         borderRadius: 12,
         border: "1px solid rgba(54,101,107,0.2)",
-        marginBottom: 24,
+        marginBottom: 6,
       }}
     >
       {/* Search icon */}
@@ -89,8 +89,8 @@ function ToggleButton({
         border: "none",
         background: active ? "#36656B" : "transparent",
         color: active ? "#F0F8A4" : "#36656B",
-        padding: "6px",
-        borderRadius: 6,
+        padding: "5px",
+        borderRadius: 8,
         cursor: "pointer",
       }}
       aria-pressed={active}
