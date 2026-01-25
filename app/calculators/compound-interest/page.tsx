@@ -10,6 +10,7 @@ import { GrowthChart } from "./GrowthChart";
 import { GrowthTable } from "./GrowthTable";
 import CalculatorLinks from "../components/CalculatorLinks";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { DownloadExcelButton } from "@/components/DownloadExcelButton";
 
 export default function CompoundInterestPage() {
   const [startingPortfolio, setStartingPortfolio] = useState("25,000");
@@ -48,14 +49,38 @@ export default function CompoundInterestPage() {
           ]}
         />
 
-        <h1 style={{ marginBottom: 12 }}>Compound Interest</h1>
+        <h1 style={{ marginBottom: 12 }}>
+          Compound Interest
+        </h1>
 
-        {/* 🔍 NEW INTRO */}
-        <p style={{ maxWidth: 980, lineHeight: 1.5, marginBottom: 12 }}>
+        <p
+          style={{
+            maxWidth: 980,
+            lineHeight: 1.5,
+            marginBottom: 12,
+          }}
+        >
           This calculator shows how compound growth works over time when you
           combine an initial portfolio, consistent monthly contributions, and an
           assumed annual rate of return.
         </p>
+
+        {/* ⬇️ Excel download */}
+        <div style={{ marginBottom: 20 }}>
+          <DownloadExcelButton
+            endpoint="/api/download-excel"
+            filename="Compound-Interest-Calculator-v1.0.0.xlsx"
+            label="Download Excel Version"
+            payload={{
+              template: "compound-interest",
+              startingPortfolio: parseNumber(startingPortfolio),
+              monthlyContribution: parseNumber(monthlyContribution),
+              years: parseNumber(years),
+              annualReturnRate:
+                Number(returnRate.replace(/,/g, "")) / 100,
+            }}
+          />     
+        </div>
 
         <div
           style={{
@@ -82,7 +107,6 @@ export default function CompoundInterestPage() {
             <GrowthChart results={results} />
           </div>
 
-          {/* 📊 NEW TABLE */}
           <GrowthTable results={results} />
         </div>
 
