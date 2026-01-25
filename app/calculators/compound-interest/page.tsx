@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { parseNumber } from "@/lib/formatters";
 import { calculateCompoundGrowth } from "./math";
@@ -18,19 +18,51 @@ export default function CompoundInterestPage() {
   const [years, setYears] = useState("40");
   const [returnRate, setReturnRate] = useState("8.00");
 
+  // ✅ Screen sizing handled locally
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const payload = {
+    template: "compound-interest",
+    startingPortfolio: parseNumber(startingPortfolio),
+    monthlyContribution: parseNumber(monthlyContribution),
+    years: parseNumber(years),
+    annualReturnRate:
+      Number(returnRate.replace(/,/g, "")) / 100,
+  };
+
   const results = useMemo(() => {
     return calculateCompoundGrowth({
-      startingPortfolio: parseNumber(startingPortfolio),
-      monthlyContribution: parseNumber(monthlyContribution),
-      years: parseNumber(years),
-      annualReturnRate: Number(returnRate.replace(/,/g, "")) / 100,
+      startingPortfolio: payload.startingPortfolio,
+      monthlyContribution: payload.monthlyContribution,
+      years: payload.years,
+      annualReturnRate: payload.annualReturnRate,
     });
-  }, [startingPortfolio, monthlyContribution, years, returnRate]);
+  }, [
+    payload.startingPortfolio,
+    payload.monthlyContribution,
+    payload.years,
+    payload.annualReturnRate,
+  ]);
+
+  const downloadButton = (
+    <DownloadExcelButton
+      endpoint="/api/download-excel"
+      filename="Compound-Interest-Calculator-v1.0.0.xlsx"
+      label="Download Excel Version"
+      payload={payload}
+    />
+  );
 
   return (
     <main
       style={{
-        minHeight: "100vh",
         padding: "60px 20px",
         color: "#36656B",
       }}
@@ -49,38 +81,44 @@ export default function CompoundInterestPage() {
           ]}
         />
 
-        <h1 style={{ marginBottom: 12 }}>
-          Compound Interest
-        </h1>
-
-        <p
-          style={{
-            maxWidth: 980,
-            lineHeight: 1.5,
-            marginBottom: 12,
-          }}
-        >
-          This calculator shows how compound growth works over time when you
-          combine an initial portfolio, consistent monthly contributions, and an
-          assumed annual rate of return.
-        </p>
-
-        {/* ⬇️ Excel download */}
-        <div style={{ marginBottom: 20 }}>
-          <DownloadExcelButton
-            endpoint="/api/download-excel"
-            filename="Compound-Interest-Calculator-v1.0.0.xlsx"
-            label="Download Excel Version"
-            payload={{
-              template: "compound-interest",
-              startingPortfolio: parseNumber(startingPortfolio),
-              monthlyContribution: parseNumber(monthlyContribution),
-              years: parseNumber(years),
-              annualReturnRate:
-                Number(returnRate.replace(/,/g, "")) / 100,
+        {/* Header row */}
+        <div style={{ marginBottom: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: isDesktop ? "center" : "flex-start",
+              justifyContent: "space-between",
+              gap: 16,
+              flexWrap: "wrap",
             }}
-          />     
+          >
+            <h1 style={{ margin: 0 }}>
+              Compound Interest
+            </h1>
+
+            {isDesktop && downloadButton}
+          </div>
+
+          <p
+            style={{
+              maxWidth: 980,
+              lineHeight: 1.5,
+              marginTop: 12,
+              marginBottom: 0,
+            }}
+          >
+            This calculator shows how compound growth works over time when you
+            combine an initial portfolio, consistent monthly contributions, and
+            an assumed annual rate of return.
+          </p>
         </div>
+
+        {/* Mobile-only placement */}
+        {!isDesktop && (
+          <div style={{ marginBottom: 20 }}>
+            {downloadButton}
+          </div>
+        )}
 
         <div
           style={{
