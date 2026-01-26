@@ -65,11 +65,20 @@ export function TableViewDesktop({
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 10,
+                      gap: 5,
                       fontWeight: 500,
                     }}
                   >
-                    <span style={{ color: "#75B06F" }}>
+                    <span
+                      style={{
+                        color: "#75B06F",
+                        width: 16,
+                        height: 16,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       {c.icon}
                     </span>
                     {c.title}

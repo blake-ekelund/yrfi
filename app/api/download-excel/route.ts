@@ -13,37 +13,99 @@ const supabase = createClient(supabaseUrl, serviceKey);
 
 export async function POST(req: Request) {
   const body = await req.json();
+  const { template } = body;
 
-  const {
-    template,
-    startingPortfolio,
-    monthlyContribution,
-    years,
-    annualReturnRate,
-  } = body;
-
-  if (template !== "compound-interest") {
+  if (!template) {
     return NextResponse.json(
-      { error: "Invalid template" },
+      { error: "Missing template type" },
       { status: 400 }
     );
   }
 
-  if (
-    typeof startingPortfolio !== "number" ||
-    typeof monthlyContribution !== "number" ||
-    typeof years !== "number" ||
-    typeof annualReturnRate !== "number"
-  ) {
+  /* =========================
+     TEMPLATE CONFIG
+  ========================= */
+
+  let fileName = "";
+  let populate: (sheet: ExcelJS.Worksheet) => void;
+
+  /* ---------- Compound Interest ---------- */
+  if (template === "compound-interest") {
+    const {
+      startingPortfolio,
+      monthlyContribution,
+      years,
+      annualReturnRate,
+    } = body;
+
+    if (
+      typeof startingPortfolio !== "number" ||
+      typeof monthlyContribution !== "number" ||
+      typeof years !== "number" ||
+      typeof annualReturnRate !== "number"
+    ) {
+      return NextResponse.json(
+        { error: "Invalid compound-interest payload" },
+        { status: 400 }
+      );
+    }
+
+    fileName = "Compound-Interest-Calculator-v1.0.0.xlsx";
+
+    populate = (sheet) => {
+      sheet.getCell("D8").value = startingPortfolio;
+      sheet.getCell("D9").value = monthlyContribution;
+      sheet.getCell("D10").value = annualReturnRate;
+      sheet.getCell("D11").value = years;
+    };
+  }
+
+  /* ---------- Mortgage ---------- */
+  else if (template === "mortgage") {
+    const {
+      homePrice,
+      downPayment,
+      interestRate,
+      termYears,
+    } = body;
+
+    if (
+      typeof homePrice !== "number" ||
+      typeof downPayment !== "number" ||
+      typeof interestRate !== "number" ||
+      typeof termYears !== "number"
+    ) {
+      return NextResponse.json(
+        { error: "Invalid mortgage payload" },
+        { status: 400 }
+      );
+    }
+
+    fileName = "Mortgage-Calculator-v1.0.0.xlsx";
+
+    populate = (sheet) => {
+      sheet.getCell("D8").value = homePrice;
+      sheet.getCell("D9").value = downPayment;
+      sheet.getCell("D10").value = interestRate;
+      sheet.getCell("D11").value = termYears;
+    };
+  }
+
+  /* ---------- Unsupported ---------- */
+  else {
     return NextResponse.json(
-      { error: "Invalid input payload" },
+      { error: "Unsupported template" },
       { status: 400 }
     );
   }
+
+  /* =========================
+     LOAD TEMPLATE
+  ========================= */
 
   const { data, error } = await supabase.storage
     .from("templates")
-    .download("Compound-Interest-Calculator-v1.0.0.xlsx");
+    .download(fileName);
 
   if (error || !data) {
     return NextResponse.json(
@@ -64,10 +126,11 @@ export async function POST(req: Request) {
     );
   }
 
-  sheet.getCell("D8").value = startingPortfolio;
-  sheet.getCell("D9").value = monthlyContribution;
-  sheet.getCell("D10").value = annualReturnRate;
-  sheet.getCell("D11").value = years;
+  /* =========================
+     POPULATE & RETURN
+  ========================= */
+
+  populate(sheet);
 
   const outputBuffer = await workbook.xlsx.writeBuffer();
 
@@ -76,7 +139,7 @@ export async function POST(req: Request) {
       "Content-Type":
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "Content-Disposition":
-        'attachment; filename="Compound-Interest-Calculator-v1.0.0.xlsx"',
+        `attachment; filename="${fileName}"`,
     },
   });
 }

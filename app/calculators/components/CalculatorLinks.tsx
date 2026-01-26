@@ -7,6 +7,7 @@ export default function CalculatorLinks({
     { key: "compound-interest", label: "Compound Interest", href: "/calculators/compound-interest" },
     { key: "target-reach", label: "Target Reach", href: "/calculators/target-reach" },
     { key: "management-fees", label: "Management Fees", href: "/calculators/management-fees" },
+    { key: "mortgage-calculator", label: "Mortgage Calculator", href: "/calculators/mortgage-calculator" },
     { key: "fire-number", label: "FIRE Number", href: "/calculators/fire-number" },
   ];
 

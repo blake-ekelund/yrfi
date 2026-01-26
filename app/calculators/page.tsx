@@ -10,6 +10,7 @@ import {
   Flame,
   LayoutGrid,
   Table as TableIcon,
+  House,
 } from "lucide-react";
 import { CalculatorsFilters } from "./components/CalculatorsFilters";
 import type { CalculatorTag } from "./components/types";
@@ -47,6 +48,14 @@ const CALCULATORS: Calculator[] = [
       "How long it may take to reach a savings or FIRE goal.",
     href: "/calculators/target-reach",
     tags: ["Savings", "Retirement"],
+  },
+  {
+    icon: <House />,
+    title: "Mortgage Calculator",
+    description:
+      "Review possible mortgage scenarios and view an amortization table.",
+    href: "/calculators/mortgage-calculator",
+    tags: ["Debt", "Investing"],
   },
   {
     icon: <Banknote />,
@@ -267,6 +276,7 @@ function ToggleButton({
         background: active ? "#36656B" : "transparent",
         color: active ? "#F0F8A4" : "#36656B",
         padding: "6px 10px",
+        margin: "2px",
         borderRadius: 8,
         cursor: "pointer",
       }}
@@ -329,16 +339,3 @@ function CalculatorCard({
     </motion.a>
   );
 }
-
-/* ================= Styles ================= */
-
-const thLeft = {
-  textAlign: "left" as const,
-  padding: "12px 16px",
-  fontSize: 12,
-  opacity: 0.7,
-};
-
-const tdLeft = {
-  padding: "12px 16px",
-};
